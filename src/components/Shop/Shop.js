@@ -3,6 +3,7 @@ import fakeData from '../../fakeData';
 import './Shop.css';
 import Product from '../Product/Product';
 import Cart from '../Cart/Cart';
+import { addToDb } from '../../utilities/fakedb';
 
 
 const Shop = () => {
@@ -12,12 +13,15 @@ const Shop = () => {
     const handleCart = (product)=>{
         const newCart =[...cart,product];
         setCart(newCart);
+        const sameProduct = newCart.filter(pd=>pd.key===product.key);
+        const count = sameProduct.length;
+        addToDb(product.key,count)
     }
     return (
         <div className='productContainer'>
             <div className='productItem'>
             {
-                products.map(product=> <Product handleCart={handleCart} product={product}></Product>)
+                products.map(product=> <Product key={product.key} showAddToCart={true} handleCart={handleCart} product={product}></Product>)
             }
             </div>
             <div className='cart'>
